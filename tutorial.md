@@ -81,8 +81,12 @@ Note the <service-account> part and set the <var>SERVICE_ACCOUNT</var> value.
 
 Execute the following command to build and push the docker image for middleware and frontend:
 ```bash
-gcloud builds submit --config=./src/middleware/cloudbuild.yaml --substitutions=_IMAGE_TAG="1.0.0"
-gcloud builds submit --config=./src/frontend/cloudbuild.yaml --substitutions=_IMAGE_TAG="1.0.0"
+cd ./src/middleware
+gcloud builds submit --config=./cloudbuild.yaml --substitutions=_IMAGE_TAG="1.0.0"
+cd -
+cd ./src/frontend
+gcloud builds submit --config=./cloudbuild.yaml --substitutions=_IMAGE_TAG="1.0.0"
+cd -
 ```
 
 NOTE: Modify the Image tags incrementally.
