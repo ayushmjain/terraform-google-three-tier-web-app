@@ -79,17 +79,27 @@ Note the <service-account> part and set the <var>SERVICE_ACCOUNT</var> value.
 ----
 **Create docker images**
 
+NOTE: Modify the Image tags incrementally.
+```Set the <var>IMAGE_TAG</var> value. Sample value="1.0.0"```
+
 Execute the following command to build and push the docker image for middleware and frontend:
 ```bash
 cd ./src/middleware
-gcloud builds submit --config=./cloudbuild.yaml --substitutions=_IMAGE_TAG="1.0.0"
+gcloud builds submit --config=./cloudbuild.yaml --substitutions=_IMAGE_TAG="<var>IMAGE_TAG</var>"
 cd -
 cd ./src/frontend
-gcloud builds submit --config=./cloudbuild.yaml --substitutions=_IMAGE_TAG="1.0.0"
+gcloud builds submit --config=./cloudbuild.yaml --substitutions=_IMAGE_TAG="<var>IMAGE_TAG</var>"
 cd -
 ```
 
-NOTE: Modify the Image tags incrementally.
+Modify the `api_image` and `fe_image` value in main.tf with the updated Image tag.
+```
+locals {
+  api_image = "gcr.io/<var>PROJECT_ID</var>/three-tier-app-be:<var>IMAGE_TAG</var> "
+  fe_image  = "gcr.io/<var>PROJECT_ID</var>/three-tier-app-fe:<var>IMAGE_TAG</var> "
+}
+```
+
 
 ----
 **Enter Service Account Details**
@@ -170,7 +180,7 @@ gcloud infra-manager deployments apply projects/<var>PROJECT_ID</var>/locations/
 Execute the following command to get the deployment details.
 
 ```bash
-gcloud infra-manager deployments describe - describe <var>DEPLOYMENT_NAME</var>
+gcloud infra-manager deployments describe <var>DEPLOYMENT_NAME</var>
 ```
 
 Monitor your deployment at [JSS deployment page](https://console.cloud.google.com/products/solutions/deployments?pageState=(%22deployments%22:(%22f%22:%22%255B%257B_22k_22_3A_22Labels_22_2C_22t_22_3A13_2C_22v_22_3A_22_5C_22modification-reason%2520_3A%2520make-it-mine_5C_22_22_2C_22s_22_3Atrue_2C_22i_22_3A_22deployment.labels_22%257D%255D%22))).
@@ -193,3 +203,4 @@ git remote set-url origin [your-own-repo-url]
 ```
 
 Review the modified files, commit and push to your remote repository branch.
+  
