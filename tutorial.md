@@ -6,18 +6,20 @@ Each solution should be edited and deployed by one user at a time to avoid confl
 
 ## Know your solution
 
-Here are the details of the GenAI doc summarization Jump Start Solution chosen by you.
+Here are the details of the Three-tier web app Jump Start Solution chosen by you.
 
-Solution Guide: [here](https://cloud.google.com/architecture/ai-ml/generative-ai-document-summarization)
+Solution Guide: [here](https://cloud.google.com/architecture/application-development/three-tier-web-app)
 
 The code for the solution is avaiable at the following location
-* Infrastructure code directory is located under `./infra`
-* Application code directory is located under `./source`
+* Infrastructure code is present as part of `./main.tf`
+* Application code directory is located under `./src`
 
 
 ## Explore or Edit the solution as per your requirement
 
-<Solution specific hints for the user to explore / modify>
+The application source code for the frontend service is present under `src/frontend` directory and for the middleware service under `src/middleware` directory. 
+
+Both these services are built as docker images and deployed using cloud run. The IaC code / terraform code is present in the `*.tf` files in the current directory.
 
 Please note: to open your recently used workspace:
 * Go to the `File` menu.
@@ -29,115 +31,136 @@ Please note: to open your recently used workspace:
 
 In this step you will gather the information required for the deployment of the solution
 
+---
 **Project ID**
 
-<walkthrough-project-setup></walkthrough-project-setup>
+Use the following command to see the projectId:
 
+```bash
+gcloud config get project
+```
+
+```
+Use above output to set the <var>PROJECT_ID</var>
+```
+
+---
 **Deployment Name**
 
 Use the following command to list the deployments:
 ```bash
-gcloud infra-manager deployments list --location=us-central1 --project=<walkthrough-project-id/>
+gcloud infra-manager deployments list --location us-central1 --filter="labels.goog-solutions-console-deployment-name:*"
 ```
 
 ```
 Use above output to set the <var>DEPLOYMENT_NAME</var>
 ```
 
-**User account email**
-
-Use the following command to see the user account email:
-```bash
-gcloud config list | grep account
-```
-```
-Use above output to set the <var>USER_EMAIL</var>
-```
-
 
 ## Deploy the solution
 
-**Set the gcloud config.**
-```bash
-gcloud config set account <var>USER_EMAIL</var>
-gcloud config set project <walkthrough-project-id/>
-```
 
-
+---
 **Fetch Deployment details**
 ```bash
-gcloud infra-manager deployments describe projects/<walkthrough-project-id/>/locations/us-central1/deployments/<var>DEPLOYMENT_NAME</var>
+gcloud infra-manager deployments describe <var>DEPLOYMENT_NAME</var> --location us-central1
 ```
 From the output of this command, note down the input values provided in the existing deployment in the `terraformBlueprint.inputValues` section.
 
-**Create the service account**
-```bash
-gcloud iam service-accounts create mim-journey
+Also note the serviceAccount from the output of this command. The value of this field is of the form 
+```
+projects/<var>PROJECT_ID</var>/serviceAccounts/<service-account>@<var>PROJECT_ID</var>.iam.gserviceaccount.com
 ```
 
+```
+Note the <service-account> part and set the <var>SERVICE_ACCOUNT</var> value.
+```
+
+----
+**Create docker images**
+
+Execute the following command to build and push the docker image for middleware and frontend:
+```bash
+gcloud builds submit --config=./src/middleware/cloudbuild.yaml --substitutions=_IMAGE_TAG="1.0.0"
+gcloud builds submit --config=./src/frontend/cloudbuild.yaml --substitutions=_IMAGE_TAG="1.0.0"
+```
+
+NOTE: Modify the Image tags incrementally.
+
+----
+**Enter Service Account Details**
+
+If you have any service account that should be used for the deployment please modify the service account value below.
+```bash
+Service Account = <var>SERVICE_ACCOUNT</var>
+```
+
+---
 **Assign the required roles to the service account**
 ```bash
-gcloud projects add-iam-policy-binding <walkthrough-project-id/> --member="serviceAccount:mim-journey@<walkthrough-project-id/>.iam.gserviceaccount.com" --role="roles/aiplatform.admin"
+gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/artifactregistry.admin"
 
 
-gcloud projects add-iam-policy-binding <walkthrough-project-id/> --member="serviceAccount:mim-journey@<walkthrough-project-id/>.iam.gserviceaccount.com" --role="roles/artifactregistry.reader"
-
-gcloud projects add-iam-policy-binding <walkthrough-project-id/> --member="serviceAccount:mim-journey@<walkthrough-project-id/>.iam.gserviceaccount.com" --role="roles/bigquery.admin"
+gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/cloudsql.admin"
 
 
-gcloud projects add-iam-policy-binding <walkthrough-project-id/> --member="serviceAccount:mim-journey@<walkthrough-project-id/>.iam.gserviceaccount.com" --role="roles/cloudfunctions.admin"
+gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/compute.networkAdmin"
 
 
-gcloud projects add-iam-policy-binding <walkthrough-project-id/> --member="serviceAccount:mim-journey@<walkthrough-project-id/>.iam.gserviceaccount.com" --role="roles/eventarc.admin"
+gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/iam.serviceAccountAdmin"
 
 
-gcloud projects add-iam-policy-binding <walkthrough-project-id/> --member="serviceAccount:mim-journey@<walkthrough-project-id/>.iam.gserviceaccount.com" --role="roles/iam.serviceAccountAdmin"
+gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/iam.serviceAccountUser"
 
 
-gcloud projects add-iam-policy-binding <walkthrough-project-id/> --member="serviceAccount:mim-journey@<walkthrough-project-id/>.iam.gserviceaccount.com" --role="roles/iam.serviceAccountUser"
+gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/redis.admin"
 
 
-gcloud projects add-iam-policy-binding <walkthrough-project-id/> --member="serviceAccount:mim-journey@<walkthrough-project-id/>.iam.gserviceaccount.com" --role="roles/logging.admin"
+gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/resourcemanager.projectIamAdmin"
 
 
-gcloud projects add-iam-policy-binding <walkthrough-project-id/> --member="serviceAccount:mim-journey@<walkthrough-project-id/>.iam.gserviceaccount.com" --role="roles/pubsub.admin"
+gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/run.admin"
 
 
-gcloud projects add-iam-policy-binding <walkthrough-project-id/> --member="serviceAccount:mim-journey@<walkthrough-project-id/>.iam.gserviceaccount.com" --role="roles/resourcemanager.projectIamAdmin"
+gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/servicenetworking.serviceAgent"
 
 
-gcloud projects add-iam-policy-binding <walkthrough-project-id/> --member="serviceAccount:mim-journey@<walkthrough-project-id/>.iam.gserviceaccount.com" --role="roles/run.admin"
+gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/serviceusage.serviceUsageAdmin"
 
 
-gcloud projects add-iam-policy-binding <walkthrough-project-id/> --member="serviceAccount:mim-journey@<walkthrough-project-id/>.iam.gserviceaccount.com" --role="roles/serviceusage.serviceUsageAdmin"
+gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/serviceusage.serviceUsageViewer"
 
 
-gcloud projects add-iam-policy-binding <walkthrough-project-id/> --member="serviceAccount:mim-journey@<walkthrough-project-id/>.iam.gserviceaccount.com" --role="roles/storage.admin"
+gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/vpcaccess.admin"
 ```
 
+---
 **Create Terraform input file**
 
 Create `input.tfvars` file.
 
 Find the sample content below and modify it by providing the respective details.
 ```
-delete_contents_on_destroy = true
-deployment_name = <input_your_deployment_name_here>
-project_id = <input_your_project_name_here>
-region = "us-central1"
+delete_contents_on_destroy=True
+region="us-central1"
+zone="us-central1-b"
+project_id = "<var>PROJECT_ID</var>"
+deployment_name = "<var>DEPLOYMENT_NAME</var>"
 labels = {
-    "goog-solutions-console-deployment-name" = "generative-ai-document-summarization",
-    "goog-solutions-console-solution-id" = "generative-ai-document-summarization"
+  "goog-solutions-console-deployment-name" = "<var>DEPLOYMENT_NAME</var>",
+  "goog-solutions-console-solution-id" = "three-tier-web-app"
 }
 ```
 
+---
 **Deploy the solution**
 
 Execute the following command to trigger the re-deployment. 
 ```bash
-gcloud infra-manager deployments apply projects/<walkthrough-project-id/>/locations/us-central1/deployments/<var>DEPLOYMENT_NAME</var> --service-account projects/<walkthrough-project-id/>/serviceAccounts/mim-journey@<walkthrough-project-id/>.iam.gserviceaccount.com --local-source="." --inputs-file=./input.tfvars --labels="modification-reason=make-it-mine,goog-solutions-console-deployment-name=generative-ai-document-summarization,goog-solutions-console-solution-id=generative-ai-document-summarization"
+gcloud infra-manager deployments apply projects/<var>PROJECT_ID</var>/locations/us-central1/deployments/<var>DEPLOYMENT_NAME</var> --service-account projects/<var>PROJECT_ID</var>/serviceAccounts/<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com --local-source="."     --inputs-file=./input.tfvars --labels="modification-reason=make-it-mine,goog-solutions-console-deployment-name=<var>DEPLOYMENT_NAME</var>,goog-solutions-console-solution-id=three-tier-web-app"
 ```
 
+---
 **Monitor the Deployment**
 
 Execute the following command to get the deployment details.
@@ -152,10 +175,12 @@ Monitor your deployment at [JSS deployment page](https://console.cloud.google.co
 
 Use any of the following methods to save your edits to the solution
 
+---
 **Download your solution in tar file**
 * Click on the `File` menu
 * Select `Download Workspace` to download the whole workspace on your local in compressed format.
 
+---
 **Save your solution to your git repository**
 
 Set the remote url to your own repository
