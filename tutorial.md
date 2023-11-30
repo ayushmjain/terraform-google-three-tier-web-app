@@ -19,7 +19,7 @@ Here are the details of the Three-tier web app Jump Start Solution chosen by you
 Solution Guide: [here](https://cloud.google.com/architecture/application-development/three-tier-web-app)
 
 The code for the solution is avaiable at the following location
-* Infrastructure code is present as part of <walkthrough-editor-open-file filePath="main.tf">main.tf</walkthrough-editor-open-file>
+* Infrastructure code is present as part of `./main.tf`
 * Application code directory is located under `./src`
 
 
@@ -81,7 +81,8 @@ projects/<var>PROJECT_ID</var>/serviceAccounts/<service-account>@<var>PROJECT_ID
 ```
 
 ```
-Note the <service-account> part and set the <var>SERVICE_ACCOUNT</var> value.
+Note <service-account> part and set the <var>SERVICE_ACCOUNT</var> value.
+You also set it to any exising service account.
 ```
 
 ----
@@ -105,15 +106,6 @@ locals {
   api_image = "gcr.io/<var>PROJECT_ID</var>/three-tier-app-be:<var>IMAGE_TAG</var> "
   fe_image  = "gcr.io/<var>PROJECT_ID</var>/three-tier-app-fe:<var>IMAGE_TAG</var> "
 }
-```
-
-
-----
-**Enter Service Account Details**
-
-If you have any service account that should be used for the deployment please modify the service account value below.
-```bash
-Service Account = <var>SERVICE_ACCOUNT</var>
 ```
 
 ---
