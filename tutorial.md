@@ -1,3 +1,11 @@
+<walkthrough-metadata>
+  <meta name="title" content="Edit Jumpstart Solution and deploy tutorial " />
+   <meta name="description" content="Make it mine neos tutorial" />
+  <meta name="component_id" content="1361081" />
+  <meta name="unlisted" content="true" />
+  <meta name="short_id" content="true" />
+</walkthrough-metadata>
+
 # Edit Jumpstart Solution and deploy tutorial 
 
 This tutorial provides the steps for you to build your own proof of concept solution based on the chosen Jumpstart Solution and deploy it. You can customize the chosen Jump start solutions (JSS) deployments by creating your own copy of the source code. You can modify the infrastructure and application code as needed and redeploy the solutions with the changes.
@@ -202,4 +210,4 @@ git remote set-url origin [your-own-repo-url]
 ```
 
 Review the modified files, commit and push to your remote repository branch.
-  
+<walkthrough-inline-feedback></walkthrough-inline-feedback>
