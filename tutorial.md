@@ -6,7 +6,7 @@
   <meta name="short_id" content="true" />
 </walkthrough-metadata>
 
-# Edit Jumpstart Solution and deploy tutorial 
+# Customize Three-tier web app Solution
 
 This tutorial provides the steps for you to build your own proof of concept solution based on the chosen Jumpstart Solution and deploy it. You can customize the chosen Jump start solutions (JSS) deployments by creating your own copy of the source code. You can modify the infrastructure and application code as needed and redeploy the solutions with the changes.
 
@@ -19,7 +19,7 @@ Here are the details of the Three-tier web app Jump Start Solution chosen by you
 Solution Guide: [here](https://cloud.google.com/architecture/application-development/three-tier-web-app)
 
 The code for the solution is avaiable at the following location
-* Infrastructure code is present as part of `./main.tf`
+* Infrastructure code is present as part of <walkthrough-editor-open-file filePath="main.tf">main.tf</walkthrough-editor-open-file>
 * Application code directory is located under `./src`
 
 
