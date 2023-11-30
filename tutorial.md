@@ -82,7 +82,7 @@ projects/<var>PROJECT_ID</var>/serviceAccounts/<service-account>@<var>PROJECT_ID
 
 ```
 Note <service-account> part and set the <var>SERVICE_ACCOUNT</var> value.
-You also set it to any exising service account.
+You can also set it to any exising service account.
 ```
 
 ----
