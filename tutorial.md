@@ -70,7 +70,7 @@ Use above output to set the <var>PROJECT_ID</var>
 
 Use the following command to list the deployments:
 ```bash
-gcloud infra-manager deployments list --location us-central1 --filter="labels.goog-solutions-console-deployment-name:*"
+gcloud infra-manager deployments list --location us-central1 --filter="labels.goog-solutions-console-deployment-name:* AND labels.goog-solutions-console-solution-id:three-tier-web-app"
 ```
 
 ```
