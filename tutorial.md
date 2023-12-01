@@ -29,11 +29,24 @@ The application source code for the frontend service is present under `src/front
 
 Both these services are built as docker images and deployed using cloud run. The IaC code / terraform code is present in the `*.tf` files in the current directory.
 
+NOTE: The changes in infrastructure may lead to reduction or increase in the incurred cost.
+
 Please note: to open your recently used workspace:
 * Go to the `File` menu.
 * Select `Open Recent Workspace`.
 * Choose the desired workspace.
 
+
+---
+**Automated deployment**
+
+Execute the below command if you want to an automated deployment to happen without following the full tutorial.
+
+The step is optional and you can continue with the full tutorial if you want to understand the individual steps involved in the script.
+
+```bash
+./deploy.sh
+```
 
 ## Gather the required information for intializing gcloud command
 
