@@ -124,40 +124,12 @@ locals {
 ---
 **Assign the required roles to the service account**
 ```bash
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/artifactregistry.admin"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/cloudsql.admin"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/compute.networkAdmin"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/iam.serviceAccountAdmin"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/iam.serviceAccountUser"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/redis.admin"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/resourcemanager.projectIamAdmin"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/run.admin"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/servicenetworking.serviceAgent"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/serviceusage.serviceUsageAdmin"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/serviceusage.serviceUsageViewer"
-
-
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" --role="roles/vpcaccess.admin"
+while IFS= read -r role || [[ -n "$role" ]]
+do \
+gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> \
+  --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" \
+  --role="$role"
+done < "roles.txt"
 ```
 
 ---
