@@ -27,9 +27,11 @@ The code for the solution is avaiable at the following location
 
 The application source code for the frontend service is present under `src/frontend` directory and for the middleware service under `src/middleware` directory. 
 
-Both these services are built as docker images and deployed using cloud run. The IaC code / terraform code is present in the `*.tf` files in the current directory.
+Both these services are built as container images and deployed using cloud run. The terraform code is present in the `*.tf` files in the current directory.
 
-NOTE: The changes in infrastructure may lead to reduction or increase in the incurred cost.
+As an example, you can edit the `createHandler` function in `./src/middleware/main.go` to add a prefix string to every TODO item by replacing `t.Title = r.FormValue("title")` with `t.Title = "Prefix " + r.FormValue("title")`.
+
+NOTE: The changes in infrastructure may lead to reduction or increase in the incurred cost. For example, storing the container images for the services incurs [storage cost](https://cloud.google.com/container-registry/pricing)
 
 Please note: to open your recently used workspace:
 * Go to the `File` menu.
@@ -37,7 +39,7 @@ Please note: to open your recently used workspace:
 * Choose the desired workspace.
 
 
----
+<!-- ---
 **Automated deployment**
 
 Execute the below command if you want to an automated deployment to happen without following the full tutorial.
@@ -46,7 +48,7 @@ The step is optional and you can continue with the full tutorial if you want to 
 
 ```bash
 ./deploy.sh
-```
+``` -->
 
 ## Gather the required information for intializing gcloud command
 
@@ -99,11 +101,11 @@ You can also set it to any exising service account.
 ```
 
 ----
-**Create docker images**
+**Create container images**
 
-NOTE: Modify the Image tags incrementally. Sample value="1.0.0"
+NOTE: Modify the Image tags incrementally. Sample value=`1.0.0`
 
-Execute the following command to build and push the docker image for middleware and frontend:
+Execute the following command to build and push the container image for middleware and frontend:
 ```bash
 cd ./src/middleware
 gcloud builds submit --config=./cloudbuild.yaml --substitutions=_IMAGE_TAG="<var>IMAGE_TAG</var>"
@@ -113,7 +115,7 @@ gcloud builds submit --config=./cloudbuild.yaml --substitutions=_IMAGE_TAG="<var
 cd -
 ```
 
-Modify the `api_image` and `fe_image` value in main.tf with the updated Image tag.
+Modify the `api_image` and `fe_image` value in `main.tf` with the updated image tag.
 ```
 locals {
   api_image = "gcr.io/<var>PROJECT_ID</var>/three-tier-app-be:<var>IMAGE_TAG</var> "
