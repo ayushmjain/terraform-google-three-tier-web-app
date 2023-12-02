@@ -136,8 +136,8 @@ cd -
 Modify the `api_image` and `fe_image` value in `main.tf` with the updated image tag.
 ```
 locals {
-  api_image = "gcr.io/<var>PROJECT_ID</var>/three-tier-app-be:<var>IMAGE_TAG</var> "
-  fe_image  = "gcr.io/<var>PROJECT_ID</var>/three-tier-app-fe:<var>IMAGE_TAG</var> "
+  api_image = "gcr.io/<var>PROJECT_ID</var>/three-tier-app-be:<var>IMAGE_TAG</var>"
+  fe_image  = "gcr.io/<var>PROJECT_ID</var>/three-tier-app-fe:<var>IMAGE_TAG</var>"
 }
 ```
 
