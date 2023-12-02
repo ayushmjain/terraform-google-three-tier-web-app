@@ -100,6 +100,17 @@ Note <service-account> part and set the <var>SERVICE_ACCOUNT</var> value.
 You can also set it to any exising service account.
 ```
 
+---
+**Assign the required roles to the service account**
+```bash
+while IFS= read -r role || [[ -n "$role" ]]
+do \
+gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> \
+  --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" \
+  --role="$role"
+done < "roles.txt"
+```
+
 ----
 **Create container images**
 
@@ -121,17 +132,6 @@ locals {
   api_image = "gcr.io/<var>PROJECT_ID</var>/three-tier-app-be:<var>IMAGE_TAG</var> "
   fe_image  = "gcr.io/<var>PROJECT_ID</var>/three-tier-app-fe:<var>IMAGE_TAG</var> "
 }
-```
-
----
-**Assign the required roles to the service account**
-```bash
-while IFS= read -r role || [[ -n "$role" ]]
-do \
-gcloud projects add-iam-policy-binding <var>PROJECT_ID</var> \
-  --member="serviceAccount:<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com" \
-  --role="$role"
-done < "roles.txt"
 ```
 
 ---
