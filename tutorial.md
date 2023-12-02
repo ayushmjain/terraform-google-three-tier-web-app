@@ -68,11 +68,18 @@ Use above output to set the <var>PROJECT_ID</var>
 ```
 
 ---
+**Deployment Region**
+
+```
+Provide the region (e.g. us-central1) where the top level deployment resources were created for the deployment <var>REGION</var>
+```
+
+---
 **Deployment Name**
 
 Use the following command to list the deployments:
 ```bash
-gcloud infra-manager deployments list --location us-central1 --filter="labels.goog-solutions-console-deployment-name:* AND labels.goog-solutions-console-solution-id:three-tier-web-app"
+gcloud infra-manager deployments list --location <var>REGION</var> --filter="labels.goog-solutions-console-deployment-name:* AND labels.goog-solutions-console-solution-id:three-tier-web-app"
 ```
 
 ```
@@ -86,7 +93,7 @@ Use above output to set the <var>DEPLOYMENT_NAME</var>
 ---
 **Fetch Deployment details**
 ```bash
-gcloud infra-manager deployments describe <var>DEPLOYMENT_NAME</var> --location us-central1
+gcloud infra-manager deployments describe <var>DEPLOYMENT_NAME</var> --location <var>REGION</var>
 ```
 From the output of this command, note down the input values provided in the existing deployment in the `terraformBlueprint.inputValues` section.
 
@@ -157,7 +164,7 @@ labels = {
 
 Execute the following command to trigger the re-deployment. 
 ```bash
-gcloud infra-manager deployments apply projects/<var>PROJECT_ID</var>/locations/us-central1/deployments/<var>DEPLOYMENT_NAME</var> --service-account projects/<var>PROJECT_ID</var>/serviceAccounts/<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com --local-source="."     --inputs-file=./input.tfvars --labels="modification-reason=make-it-mine,goog-solutions-console-deployment-name=<var>DEPLOYMENT_NAME</var>,goog-solutions-console-solution-id=three-tier-web-app"
+gcloud infra-manager deployments apply projects/<var>PROJECT_ID</var>/locations/<var>REGION</var>/deployments/<var>DEPLOYMENT_NAME</var> --service-account projects/<var>PROJECT_ID</var>/serviceAccounts/<var>SERVICE_ACCOUNT</var>@<var>PROJECT_ID</var>.iam.gserviceaccount.com --local-source="."     --inputs-file=./input.tfvars --labels="modification-reason=make-it-mine,goog-solutions-console-deployment-name=<var>DEPLOYMENT_NAME</var>,goog-solutions-console-solution-id=three-tier-web-app"
 ```
 
 ---
@@ -166,7 +173,7 @@ gcloud infra-manager deployments apply projects/<var>PROJECT_ID</var>/locations/
 Execute the following command to get the deployment details.
 
 ```bash
-gcloud infra-manager deployments describe <var>DEPLOYMENT_NAME</var> --location us-central1
+gcloud infra-manager deployments describe <var>DEPLOYMENT_NAME</var> --location <var>REGION</var>
 ```
 
 Monitor your deployment at [JSS deployment page](https://console.cloud.google.com/products/solutions/deployments?pageState=(%22deployments%22:(%22f%22:%22%255B%257B_22k_22_3A_22Labels_22_2C_22t_22_3A13_2C_22v_22_3A_22_5C_22modification-reason%2520_3A%2520make-it-mine_5C_22_22_2C_22s_22_3Atrue_2C_22i_22_3A_22deployment.labels_22%257D%255D%22))).
