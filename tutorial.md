@@ -39,16 +39,16 @@ Please note: to open your recently used workspace:
 * Choose the desired workspace.
 
 
-<!-- ---
+---
 **Automated deployment**
 
-Execute the below command if you want to an automated deployment to happen without following the full tutorial.
+Execute the below command if you want an automated deployment to happen without following the full tutorial.
 
 The step is optional and you can continue with the full tutorial if you want to understand the individual steps involved in the script.
 
 ```bash
 ./deploy.sh
-``` -->
+```
 
 ## Gather the required information for intializing gcloud command
 
@@ -150,7 +150,7 @@ Find the sample content below and modify it by providing the respective details.
 ```
 delete_contents_on_destroy=True
 region="us-central1"
-zone="us-central1-b"
+zone="us-central1-a"
 project_id = "<var>PROJECT_ID</var>"
 deployment_name = "<var>DEPLOYMENT_NAME</var>"
 labels = {
