@@ -8,7 +8,7 @@
 
 # Customize Three-tier web app Solution
 
-This tutorial provides the steps for you to build your own proof of concept solution based on the chosen Jumpstart Solution and deploy it. You can customize the chosen Jump start solutions (JSS) deployments by creating your own copy of the source code. You can modify the infrastructure and application code as needed and redeploy the solutions with the changes.
+This tutorial provides the steps for you to build your own proof of concept solution based on the chosen Jump Start Solution (JSS) and deploy it. You can customize the chosen Jump Start Solutions (JSS) deployments by creating your own copy of the source code. You can modify the infrastructure and application code as needed and redeploy the solutions with the changes.
 
 Each solution should be edited and deployed by one user at a time to avoid conflicts.
 
@@ -31,7 +31,7 @@ Both these services are built as container images and deployed using cloud run. 
 
 As an example, you can edit the `createHandler` function in `./src/middleware/main.go` to add a prefix string to every TODO item by replacing `t.Title = r.FormValue("title")` with `t.Title = "Prefix " + r.FormValue("title")`.
 
-NOTE: The changes in infrastructure may lead to reduction or increase in the incurred cost. For example, storing the container images for the services incurs [storage cost](https://cloud.google.com/container-registry/pricing)
+NOTE: The changes in infrastructure may lead to reduction or increase in the incurred cost. For example, storing the container images for the services incurs [storage cost](https://cloud.google.com/container-registry/pricing).
 
 Please note: to open your recently used workspace:
 * Go to the `File` menu.
@@ -42,9 +42,8 @@ Please note: to open your recently used workspace:
 ---
 **Automated deployment**
 
-Execute the below command if you want an automated deployment to happen without following the full tutorial.
-
-The step is optional and you can continue with the full tutorial if you want to understand the individual steps involved in the script.
+Execute the deloy.sh script if you want an automated deployment to happen without following the full tutorial.
+This step is optional and you can continue with the full tutorial if you want to understand the individual steps involved in the script.
 
 ```bash
 ./deploy.sh
@@ -52,7 +51,7 @@ The step is optional and you can continue with the full tutorial if you want to 
 
 ## Gather the required information for intializing gcloud command
 
-In this step you will gather the information required for the deployment of the solution
+In this step you will gather the information required for the deployment of the solution.
 
 ---
 **Project ID**
