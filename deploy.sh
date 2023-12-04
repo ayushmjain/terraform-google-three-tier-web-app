@@ -43,7 +43,6 @@ echo -e "locals {\n  api_image = \"gcr.io/${PROJECT_ID}/three-tier-app-be:${IMAG
 read -p "Once done, press Enter to continue..."
 
 cat <<EOF > input.tfvars
-delete_contents_on_destroy=True
 region="us-central1"
 zone="us-central1-a"
 project_id = "${PROJECT_ID}"
