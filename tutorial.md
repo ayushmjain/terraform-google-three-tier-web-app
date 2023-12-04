@@ -147,7 +147,6 @@ Create `input.tfvars` file.
 
 Find the sample content below and modify it by providing the respective details.
 ```
-delete_contents_on_destroy=True
 region="us-central1"
 zone="us-central1-a"
 project_id = "<var>PROJECT_ID</var>"
