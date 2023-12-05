@@ -10,3 +10,4 @@ roles/servicenetworking.serviceAgent
 roles/serviceusage.serviceUsageAdmin
 roles/serviceusage.serviceUsageViewer
 roles/vpcaccess.admin
+roles/config.agent
